@@ -80,7 +80,9 @@ public class Tabs  extends JPanel{
         //allServicesBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         leftColumn.add(newServiceBtn);
-        leftColumn.add(addServiceBtn);
+        if (b.getUserLevel() > 1) {
+            leftColumn.add(addServiceBtn);
+        }
         //leftColumn.add(allServicesBtn);
         addServiceBtn.addActionListener(new ActionListener() {
             @Override
