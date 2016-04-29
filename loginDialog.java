@@ -93,31 +93,33 @@ public class loginDialog extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 User user = new User();
                 User b = null;
-                if(!userField.getText().isEmpty() && !passwordField.getText().isEmpty()) {
+                if (!userField.getText().isEmpty() && !passwordField.getText().isEmpty()) {
                     try {
                         b = user.login(userField.getText(), passwordField.getText());
-                    } catch (JAXBException e1) {
-                        e1.printStackTrace();
-                    }
-                }
-                if(b != null) {
-                    JOptionPane.showMessageDialog(null,
-                            "Prisijungėte sėkimingai!",
-                            "Info",
-                            JOptionPane.INFORMATION_MESSAGE);
-                    setVisible(false);
-                    try {
-                        new mainFrame(b); //.setVisible(true);
+                        if (b.getId() != 0) {
+                            JOptionPane.showMessageDialog(null,
+                                    "Prisijungėte sėkimingai! ",
+                                    "Info",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                            setVisible(false);
+                            new mainFrame(b);
+                        } else {
+                            showError();
+                        }
                     } catch (JAXBException e1) {
                         e1.printStackTrace();
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null,
-                            "Blogi prisijungimo duomenys",
-                            "Klaida",
-                            JOptionPane.ERROR_MESSAGE);
+                    showError();
                 }
             }
         });
     }
+    public void showError() {
+        JOptionPane.showMessageDialog(null,
+                "Blogi prisijungimo duomenys",
+                "Klaida",
+                JOptionPane.ERROR_MESSAGE);
+    }
 }
+

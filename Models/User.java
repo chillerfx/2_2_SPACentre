@@ -112,6 +112,8 @@ public class User {
                 return user;
             }
         }
-        return new User();
+        User user = new User();
+        user.setId(0);
+        return user;
     }
 }

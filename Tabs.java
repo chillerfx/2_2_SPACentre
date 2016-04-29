@@ -25,22 +25,24 @@ public class Tabs  extends JPanel{
 
     private DefaultTableModel ordersTableModel = new DefaultTableModel();
     public JPanel ordersTab(Models.User b, JFrame frame) throws JAXBException {
-        String[] columnNames = {
+        JPanel panel = new JPanel();
+        Object[] columnNames = {
                 "User ID",
                 "Apsilankymo Data",
                 "Abonimento Tipas(?)",
                 "Užsakymo dydis (žmonių kiekis)",
-                "Užsakymo suma",
-                "Užsakymo būsena"
+                "Suma",
+                "Būsena"
         };
-        ordersTableModel.setColumnIdentifiers(columnNames);
+        DefaultTableModel dtm = new DefaultTableModel();
+        dtm.setColumnIdentifiers(columnNames);
         for(Order order: allUserOrdersData(b)) {
             int userId = order.getUserId();
             String  visitTime = order.getDate();
             int qantity = order.getQuantity();
             String total = "@TODO implement thiis"; //@TODO implement this
             String status = order.getOrderStatus();
-            ordersTableModel.addRow(new String[] {
+            dtm.addRow(new Object[] {
                     "" + userId + "",
                     "" + visitTime + "",
                     "g",
@@ -48,12 +50,10 @@ public class Tabs  extends JPanel{
                     ""+ total + "",
                     ""+ status + ""});
         }
-
-        JTable OrdersTable = new JTable(ordersTableModel);
-        JPanel ordersPanel = new JPanel();
-        ordersPanel.add(OrdersTable);
-
-        return ordersPanel;
+        JTable table = new JTable(dtm);
+        JScrollPane scrollPane = new JScrollPane(table);
+        panel.add(scrollPane);
+        return panel;
     }
     public JPanel usersTab(Models.User b, JFrame frame) throws JAXBException {
         JPanel panel = new JPanel();
@@ -127,7 +127,6 @@ public class Tabs  extends JPanel{
     }
     public void orderNewServiceDialog(JFrame frame) throws JAXBException {
         JPanel panel = new JPanel();
-        JButton btn = new JButton("Užsisakyti");
         Object[] columnNames = {
                 "ID",
                 "Miestas",
