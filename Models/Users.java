@@ -1,5 +1,6 @@
 package Models;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javax.xml.bind.JAXBException;
@@ -34,5 +35,15 @@ public class Users {
         usrs.getUsers().add(newUser);
         xml.writeData(Users.class, usrs, "Users.xml");
         return true;
+    }
+    public Users getAllUsers() throws JAXBException {
+        Users users = new Users();
+        users.setUsers(new ArrayList<User>());
+        xmlProcessing xml = new xmlProcessing();
+        Users usersData = (Users) xml.readData(Users.class, "Users.xml");
+        for(User user : usersData.getUsers()){
+            users.getUsers().add(user);
+        }
+        return users;
     }
 }

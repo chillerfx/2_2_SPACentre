@@ -156,6 +156,7 @@ public class registrationDialog extends JFrame {
             }
         }
         pack();
+        setLocationRelativeTo(null);
         setVisible(true);
         loginButton.addActionListener(new ActionListener() {
             @Override

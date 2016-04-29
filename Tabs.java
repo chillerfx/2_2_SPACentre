@@ -18,13 +18,12 @@ import static java.awt.ComponentOrientation.LEFT_TO_RIGHT;
 public class Tabs  extends JPanel{
     private Orders orders = new Orders();
     private SPAServices spaServices = new SPAServices();
-    private JComboBox comboBox                 = new JComboBox();
+    private Users users = new Users();
 
     private JButton newServiceBtn               = new JButton("Paslaugų užsakymas");
     private JButton addServiceBtn               = new JButton("Pridėti paslaugą (Admin only)");
 
     private DefaultTableModel ordersTableModel = new DefaultTableModel();
-    private DefaultTableModel servicesTableModel = new DefaultTableModel();
     public JPanel ordersTab(Models.User b, JFrame frame) throws JAXBException {
         String[] columnNames = {
                 "User ID",
@@ -56,16 +55,37 @@ public class Tabs  extends JPanel{
 
         return ordersPanel;
     }
-    public JPanel usersTab(Models.User b, JFrame frame) {
-        return new JPanel();
+    public JPanel usersTab(Models.User b, JFrame frame) throws JAXBException {
+        JPanel panel = new JPanel();
+        Object[] columnNames = {
+                "UserID",
+                "Username",
+                "Slaptažodis",
+                "Vardas",
+                "Pavardė",
+                "El. paštas",
+                "Vartotojo tipas"
+        };
+        DefaultTableModel dtm = new DefaultTableModel();
+        dtm.setColumnIdentifiers(columnNames);
+        for(User user : allUsers()) {
+            dtm.addRow(new Object[] {
+                    user.getId(),
+                    user.getUsername(),
+                    user.getPassword(),
+                    user.getUserName(),
+                    user.getUserSurname(),
+                    user.getEmail(),
+                    user.getUserLevel()
+            });
+        }
+        JTable table = new JTable(dtm);
+        //table.setModel(dtm);
+        JScrollPane scrollPane = new JScrollPane(table);
+        panel.add(scrollPane);
+        return panel;
     }
     public JPanel serviceTab(Models.User b, final JFrame frame) throws JAXBException {
-        /*String[] cities = { "Ebullient", "Obtuse", "Recalcitrant",
-                "Brilliant", "Somnescent", "Timorous", "Florid", "Putrescent" };
-        for(String city : cities) {
-            comboBox.addItem(city);
-        }
-        */
         JPanel grid         = new JPanel();
         final JPanel leftColumn   = new JPanel();
         JPanel rightColumn  = new JPanel();
@@ -144,6 +164,7 @@ public class Tabs  extends JPanel{
                 true);
         dialog.setContentPane(panel);
         dialog.pack();
+        dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
     }
 
@@ -237,6 +258,7 @@ public class Tabs  extends JPanel{
                 true);
         dialog.setContentPane(panel);
         dialog.pack();
+        dialog.setLocationRelativeTo(null);
         addBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -270,6 +292,10 @@ public class Tabs  extends JPanel{
         });
         dialog.setVisible(true);
         }
+    public List<User> allUsers() throws JAXBException {
+        Users allUsers = users.getAllUsers();
+        return allUsers.getUsers();
+    }
     public List<SPAService> allSPAData() throws JAXBException {
         SPAServices allSPAServices = spaServices.getAllServices();
         return allSPAServices.getSPAServices();
@@ -282,6 +308,7 @@ public class Tabs  extends JPanel{
         panel.add(element);
         dialog.setContentPane(panel);
         dialog.pack();
+        dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
     }
 

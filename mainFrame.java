@@ -47,6 +47,7 @@ public class mainFrame extends JFrame {
         }
         jframe.add(tabbedPane);
         jframe.pack();
+        jframe.setLocationRelativeTo(null);
         jframe.setVisible(true);
 
         logOut.addActionListener(new ActionListener() {

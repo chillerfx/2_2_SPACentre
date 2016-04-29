@@ -29,6 +29,7 @@ class ButtonEditor extends DefaultCellEditor {
     protected JButton button;
     private String label;
     private boolean isPushed;
+    private Object id;
 
     public ButtonEditor(JCheckBox checkBox) {
         super(checkBox);
@@ -54,6 +55,9 @@ class ButtonEditor extends DefaultCellEditor {
         }
         label = (value == null) ? "" : value.toString();
         button.setText(label);
+
+        id = table.getValueAt(row, 0);
+        System.out.println(id);
         isPushed = true;
         return button;
     }
@@ -61,7 +65,7 @@ class ButtonEditor extends DefaultCellEditor {
     @Override
     public Object getCellEditorValue() {
         if (isPushed) {
-            JOptionPane.showMessageDialog(button, label + ": Ouch!");
+            JOptionPane.showMessageDialog(button, label + ": id " + id);
         }
         isPushed = false;
         return label;

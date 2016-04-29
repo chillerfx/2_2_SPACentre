@@ -79,6 +79,7 @@ public class loginDialog extends JFrame {
             }
         }
         pack();
+        setLocationRelativeTo(null);
         setVisible(true);
         registerButton.addActionListener(new ActionListener() {
             @Override
