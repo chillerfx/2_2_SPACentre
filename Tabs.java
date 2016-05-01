@@ -1,16 +1,11 @@
 import Models.*;
-import com.sun.javafx.binding.DoubleConstant;
-import com.sun.javafx.fxml.PropertyChangeEvent;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import javax.xml.bind.JAXBException;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeListener;
-import java.util.*;
 import java.util.List;
 
 import static java.awt.ComponentOrientation.LEFT_TO_RIGHT;
@@ -24,7 +19,7 @@ public class Tabs  extends JPanel{
     private JButton addServiceBtn               = new JButton("Pridėti paslaugą (Admin only)");
 
     private DefaultTableModel ordersTableModel = new DefaultTableModel();
-    public JPanel ordersTab(Models.User b, JFrame frame) throws JAXBException {
+    public JPanel ordersTab(User b, JFrame frame) throws JAXBException {
         JPanel panel = new JPanel();
         Object[] columnNames = {
                 "User ID",
@@ -55,7 +50,7 @@ public class Tabs  extends JPanel{
         panel.add(scrollPane);
         return panel;
     }
-    public JPanel usersTab(Models.User b, JFrame frame) throws JAXBException {
+    public JPanel usersTab(User b, JFrame frame) throws JAXBException {
         JPanel panel = new JPanel();
         Object[] columnNames = {
                 "UserID",
@@ -85,7 +80,7 @@ public class Tabs  extends JPanel{
         panel.add(scrollPane);
         return panel;
     }
-    public JPanel serviceTab(Models.User b, final JFrame frame) throws JAXBException {
+    public JPanel serviceTab(final User b, final JFrame frame) throws JAXBException {
         JPanel grid         = new JPanel();
         final JPanel leftColumn   = new JPanel();
         JPanel rightColumn  = new JPanel();
@@ -114,7 +109,7 @@ public class Tabs  extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    orderNewServiceDialog(frame);
+                    orderNewServiceDialog(frame, b);
                 } catch (JAXBException e1) {
                     e1.printStackTrace();
                 }
@@ -125,7 +120,7 @@ public class Tabs  extends JPanel{
         grid.add(rightColumn);
         return grid;
     }
-    public void orderNewServiceDialog(JFrame frame) throws JAXBException {
+    public void orderNewServiceDialog(JFrame frame, User b) throws JAXBException {
         JPanel panel = new JPanel();
         Object[] columnNames = {
                 "ID",
@@ -150,8 +145,8 @@ public class Tabs  extends JPanel{
         dtm.setColumnIdentifiers(columnNames );
         JTable table = new JTable(dtm);
 
-        table.getColumn("  ").setCellRenderer(new ButtonRenderer());
-        table.getColumn("  ").setCellEditor(new ButtonEditor(new JCheckBox()));
+        table.getColumn("  ").setCellRenderer(new OrderRenderer());
+        table.getColumn("  ").setCellEditor(new OrderEditor(new JCheckBox(), b));
         table.getColumnModel().getColumn(4).setPreferredWidth(100);
 
         table.setModel(dtm);
@@ -170,19 +165,19 @@ public class Tabs  extends JPanel{
 
     public void addNewServiceDialog(JFrame frame)  {
         JLabel      maxQLabel        = new JLabel("Maksimalus kiekis per dieną");
-        final JTextField  maxQField    = new JTextField(5);
         JLabel      ageDiscountLabel = new JLabel("Nuolaidos amžiaus grupėms");
-        final JCheckBox   ageDiscountCheckBox = new JCheckBox();
         JButton     addBtn          = new JButton("Pridėti SPA");
         JLabel      priceLabel       = new JLabel("Kaina, vnt. EUR");
-        final JTextField  priceField   = new JTextField(20);
         JLabel      spaNameLabel     = new JLabel("SPA pavadinimas");
-        final JTextField  spaNameField = new JTextField(20);
         JLabel      cityLabel        = new JLabel("Miestas");
         JTextField  cityField    = new JTextField(20);
         JLabel      spaServiceNameLabel = new JLabel("Procedūra");
+        JPanel      panel              = new JPanel();
+        final JTextField  maxQField    = new JTextField(5);
+        final JCheckBox   ageDiscountCheckBox = new JCheckBox();
+        final JTextField  priceField   = new JTextField(20);
+        final JTextField  spaNameField = new JTextField(20);
         final JTextField  spaServiceNameField = new JTextField(20);
-        JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(0, 1, 1, 3));
         {
             JPanel panel_1 = new JPanel();

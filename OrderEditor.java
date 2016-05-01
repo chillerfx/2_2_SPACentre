@@ -1,11 +1,16 @@
+import Models.User;
+
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-class ButtonRenderer extends JButton implements TableCellRenderer {
+import java.text.DateFormat;
+import java.util.Date;
 
-    public ButtonRenderer() {
+class OrderRenderer extends JButton implements TableCellRenderer {
+
+    public OrderRenderer() {
         setOpaque(true);
     }
 
@@ -24,15 +29,17 @@ class ButtonRenderer extends JButton implements TableCellRenderer {
     }
 }
 
-class ButtonEditor extends DefaultCellEditor {
+class OrderEditor extends DefaultCellEditor {
 
     protected JButton button;
     private String label;
     private boolean isPushed;
-    private Object id;
+    private Object serviceId;
+    private int userId;
 
-    public ButtonEditor(JCheckBox checkBox) {
+    public OrderEditor(JCheckBox checkBox, User b) {
         super(checkBox);
+        userId = b.getId();
         button = new JButton();
         button.setOpaque(true);
         button.addActionListener(new ActionListener() {
@@ -56,16 +63,35 @@ class ButtonEditor extends DefaultCellEditor {
         label = (value == null) ? "" : value.toString();
         button.setText(label);
 
-        id = table.getValueAt(row, 0);
-        System.out.println(id);
+        serviceId = table.getValueAt(row, 0);
         isPushed = true;
         return button;
     }
 
     @Override
     public Object getCellEditorValue() {
+        JPanel panel = new JPanel();
+        JLabel qtyLabel = new JLabel("Kiekis");
+        JTextField qty  = new JTextField(10);
+        JLabel dateLabel = new JLabel("Apsilankymo data (formatas)");
+        JTextField date  = new JTextField(10);
+
+        Date today;
+        String dateOut;
+        DateFormat dateFormatter;
+        dateFormatter = DateFormat.getDateInstance(DateFormat.DEFAULT);
+        today = new Date();
+        dateOut = dateFormatter.format(today);
+        System.out.println(dateOut + " " );
+
+        panel.add(qtyLabel);
+        panel.add(qty);
+        panel.add(dateLabel);
+        panel.add(date);
+
         if (isPushed) {
-            JOptionPane.showMessageDialog(button, label + ": id " + id);
+            /*label + ": id " + id + "userId :" + userId*/
+            JOptionPane.showMessageDialog(button, panel);
         }
         isPushed = false;
         return label;
