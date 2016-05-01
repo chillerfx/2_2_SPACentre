@@ -1,11 +1,14 @@
 import Models.*;
-
+import com.sun.javafx.binding.DoubleConstant;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import javax.xml.bind.JAXBException;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeListener;
+import java.util.*;
 import java.util.List;
 
 import static java.awt.ComponentOrientation.LEFT_TO_RIGHT;
@@ -19,7 +22,8 @@ public class Tabs  extends JPanel{
     private JButton addServiceBtn               = new JButton("Pridėti paslaugą (Admin only)");
 
     private DefaultTableModel ordersTableModel = new DefaultTableModel();
-    public JPanel ordersTab(User b, JFrame frame) throws JAXBException {
+
+    public JPanel ordersTabAll(Models.User b, JFrame frame) throws JAXBException {
         JPanel panel = new JPanel();
         Object[] columnNames = {
                 "User ID",
@@ -29,6 +33,7 @@ public class Tabs  extends JPanel{
                 "Suma",
                 "Būsena"
         };
+        //padaryt, kad rodytu dabartinio vartotojo uzsakymus
         DefaultTableModel dtm = new DefaultTableModel();
         dtm.setColumnIdentifiers(columnNames);
         for(Order order: allUserOrdersData(b)) {
@@ -50,7 +55,37 @@ public class Tabs  extends JPanel{
         panel.add(scrollPane);
         return panel;
     }
-    public JPanel usersTab(User b, JFrame frame) throws JAXBException {
+
+    public JPanel ordersTab(Models.User b, JFrame frame) throws JAXBException {
+        JPanel panel = new JPanel();
+        Object[] columnNames = {
+                "Apsilankymo Data",
+                "Abonimento Tipas(?)",
+                "Užsakymo dydis (žmonių kiekis)",
+                "Suma",
+                "Būsena"
+        };
+        DefaultTableModel dtm = new DefaultTableModel();
+        dtm.setColumnIdentifiers(columnNames);
+        for(Order order: allUserOrdersData(b)) {
+            String  visitTime = order.getDate();
+            int qantity = order.getQuantity();
+            String total = "@TODO implement thiis"; //@TODO implement this
+            String status = order.getOrderStatus();
+            dtm.addRow(new Object[] {
+                    "" + visitTime + "",
+                    "g",
+                    ""+ qantity  +"",
+                    ""+ total + "",
+                    ""+ status + ""});
+        }
+        JTable table = new JTable(dtm);
+        JScrollPane scrollPane = new JScrollPane(table);
+        panel.add(scrollPane);
+        return panel;
+    }
+
+    public JPanel usersTab(Models.User b, JFrame frame) throws JAXBException {
         JPanel panel = new JPanel();
         Object[] columnNames = {
                 "UserID",
@@ -120,14 +155,13 @@ public class Tabs  extends JPanel{
         grid.add(rightColumn);
         return grid;
     }
-    public void orderNewServiceDialog(JFrame frame, User b) throws JAXBException {
+    public void orderNewServiceDialog(JFrame frame,User user) throws JAXBException {
         JPanel panel = new JPanel();
         Object[] columnNames = {
                 "ID",
                 "Miestas",
                 "SPA",
                 "Procedūra",
-                "Kaina, EUR",
                 "  "
         };
         DefaultTableModel dtm = new DefaultTableModel();
@@ -135,12 +169,11 @@ public class Tabs  extends JPanel{
         for(int i = 0; i<allSPAData().size(); i++) {
             SPAService service = allSPAData().get(i);
             dtm.addRow(new Object[]{
-                    service.getId(),
-                    service.getCity(),
-                    service.getSPAName(),
-                    service.getSPAService(),
-                    service.getUnitPrice(),
-                    "Užsisakyti"
+                            service.getId(),
+                            service.getCity(),
+                            service.getSPAName(),
+                            service.getSPAService(),
+                            "Užsisakyti"
                     }
             );
         }
@@ -148,7 +181,7 @@ public class Tabs  extends JPanel{
         JTable table = new JTable(dtm);
 
         table.getColumn("  ").setCellRenderer(new OrderRenderer());
-        table.getColumn("  ").setCellEditor(new OrderEditor(new JCheckBox(), b));
+        table.getColumn("  ").setCellEditor(new OrderEditor(new JCheckBox(), user));
         table.getColumnModel().getColumn(4).setPreferredWidth(100);
 
         table.setModel(dtm);
@@ -156,7 +189,7 @@ public class Tabs  extends JPanel{
         JScrollPane scrollPane = new JScrollPane(table);
         panel.add(scrollPane);
         JDialog dialog = new JDialog(frame,
-                "Naujos pasulaogos užsakymas",
+                "Naujos paslaugos užsakymas",
                 true);
         dialog.setContentPane(panel);
         dialog.pack();
@@ -167,19 +200,19 @@ public class Tabs  extends JPanel{
 
     public void addNewServiceDialog(JFrame frame)  {
         JLabel      maxQLabel        = new JLabel("Maksimalus kiekis per dieną");
+        final JTextField  maxQField    = new JTextField(5);
         JLabel      ageDiscountLabel = new JLabel("Nuolaidos amžiaus grupėms");
+        final JCheckBox   ageDiscountCheckBox = new JCheckBox();
         JButton     addBtn          = new JButton("Pridėti SPA");
         JLabel      priceLabel       = new JLabel("Kaina, vnt. EUR");
+        final JTextField  priceField   = new JTextField(20);
         JLabel      spaNameLabel     = new JLabel("SPA pavadinimas");
+        final JTextField  spaNameField = new JTextField(20);
         JLabel      cityLabel        = new JLabel("Miestas");
         JTextField  cityField    = new JTextField(20);
         JLabel      spaServiceNameLabel = new JLabel("Procedūra");
-        JPanel      panel              = new JPanel();
-        final JTextField  maxQField    = new JTextField(5);
-        final JCheckBox   ageDiscountCheckBox = new JCheckBox();
-        final JTextField  priceField   = new JTextField(20);
-        final JTextField  spaNameField = new JTextField(20);
         final JTextField  spaServiceNameField = new JTextField(20);
+        JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(0, 1, 1, 3));
         {
             JPanel panel_1 = new JPanel();
@@ -250,7 +283,7 @@ public class Tabs  extends JPanel{
             }
         }
         final JDialog dialog = new JDialog(frame,
-                "Naujos pasulaogos forma",
+                "Naujos paslaugos forma",
                 true);
         dialog.setContentPane(panel);
         dialog.pack();
@@ -258,7 +291,7 @@ public class Tabs  extends JPanel{
         addBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                System.out.println("click");
                 SPAService newSPAservice = new SPAService();
                 newSPAservice.setMaxQuantity(Integer.parseInt(maxQField.getText()));
                 newSPAservice.setSPAName(spaNameField.getText());
@@ -272,7 +305,7 @@ public class Tabs  extends JPanel{
                     SPAServices sservices = new SPAServices();
                     boolean nsservices = sservices.addNewService(newSPAservice);
                     if(nsservices  == true) {
-                        JOptionPane.showMessageDialog(null, "Procedūra sėkmingai pridęta", "Veiksmas", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Procedūra sėkmingai pridšta", "Veiksmas", JOptionPane.INFORMATION_MESSAGE);
                         dialog.setVisible(false);
 
                     } else {
@@ -287,7 +320,7 @@ public class Tabs  extends JPanel{
             }
         });
         dialog.setVisible(true);
-        }
+    }
     public List<User> allUsers() throws JAXBException {
         Users allUsers = users.getAllUsers();
         return allUsers.getUsers();

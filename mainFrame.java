@@ -16,12 +16,10 @@ import static java.lang.Boolean.TRUE;
 
 public class mainFrame extends JFrame {
 
-
     private JFrame jframe                      = new JFrame();
-
     private JMenuBar jmenubar                  = new JMenuBar();
-    private JMenu jmenu                        = new JMenu("Settings");
-    private JMenuItem logOut                   = new JMenuItem("Log out");
+    private JMenu jmenu                        = new JMenu("Nustatymai");
+    private JMenuItem logOut                   = new JMenuItem("Atsijungti");
 
 
     private JTabbedPane tabbedPane              = new JTabbedPane();
@@ -37,13 +35,16 @@ public class mainFrame extends JFrame {
         Tabs tab2 = new Tabs();
         JPanel servicesTab = tab.serviceTab(currentUser, jframe);
         JPanel ordersTab = tab1.ordersTab(currentUser, jframe);
+        JPanel ordersTabAll = tab1.ordersTabAll(currentUser, jframe);
         JPanel usersTab = tab.usersTab(currentUser, jframe);
 
         tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+
         tabbedPane.addTab("Paslaugos",servicesTab);
+        tabbedPane.addTab("Užsakymai",ordersTab);
         if(currentUser.getUserLevel() > 1) {
-        tabbedPane.addTab("Užsakymai", ordersTab);
-        tabbedPane.addTab("Vartotojai", usersTab);
+            tabbedPane.addTab("Užsakymai visų klientų", ordersTabAll);
+            tabbedPane.addTab("Vartotojai", usersTab);
         }
         jframe.add(tabbedPane);
         jframe.pack();
