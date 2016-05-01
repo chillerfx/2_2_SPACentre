@@ -9,7 +9,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.swing.text.DateFormatter;
+import javax.swing.text.DefaultFormatterFactory;
 
 class OrderRenderer extends JButton implements TableCellRenderer {
 
@@ -77,59 +80,59 @@ class OrderEditor extends DefaultCellEditor {
         JLabel qtyLabel = new JLabel("Kiekis");
         final JTextField qty  = new JTextField(10);
         JLabel dateLabel = new JLabel("Apsilankymo data (formatas)");
-        final JTextField date  = new JTextField(10);
+        final DateFormatter dateFormatter = new DateFormatter(new SimpleDateFormat("dd/MM/yyyy"));
+        final DefaultFormatterFactory dateFormatterFactory = new DefaultFormatterFactory(dateFormatter, new DateFormatter(), dateFormatter);
+        final JFormattedTextField dateField = new JFormattedTextField(dateFormatterFactory);
+        dateField.setValue(new Date());
         JButton btn = new JButton("Naujas užsakymas");
-        Date today;
-        String dateOut;
-        DateFormat dateFormatter;
-        dateFormatter = DateFormat.getDateInstance(DateFormat.DEFAULT);
-        today = new Date();
-        dateOut = dateFormatter.format(today);
-        System.out.println(dateOut + " " );
 
         panel.add(qtyLabel);
         panel.add(qty);
         panel.add(dateLabel);
-        panel.add(date);
+        panel.add(dateField);
         panel.add(btn);
+        btn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Integer q =  Integer.parseInt(qty.getText());
+                String d = dateField.getText();
+                Order newOrder = new Order();
+                newOrder.setUserId(userId);
+                newOrder.setOrderStatus("NEW ORDER");
+                newOrder.setServiceId(serviceId);
+                newOrder.setDate(d);
+                newOrder.setQuantity(q);
+                int hash = newOrder.hashCode();
+                newOrder.setId(hash);
+                Orders o = new Orders();
+                try {
+                    o.addNewOrder(newOrder);
+                    boolean b = o.addNewOrder(newOrder);
+                    System.out.println(b);
+                    if (b) {
+                        JOptionPane.showMessageDialog(null, "Užsakymas sėkmingas!", "Užsakymas", JOptionPane.INFORMATION_MESSAGE);
+                        //dialog.setVisible(false);
 
+                    } else {
+                        //errorDialog();
+                    }
+                } catch (JAXBException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
         if (isPushed) {
             final JDialog dialog = new JDialog(new JFrame(),
-                    "Naujos pasulaogos forma",
+                    "Naujos paslaugos forma",
                     true);
             dialog.setContentPane(panel);
             dialog.pack();
             dialog.setLocationRelativeTo(null);
             dialog.setVisible(true);
             //JOptionPane.showMessageDialog(null, panel, true);
-            btn.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    Integer q =  Integer.parseInt(qty.getText());
-                    String d = date.getText();
-                    Order newOrder = new Order();
-                    newOrder.setUserId(userId);
-                    newOrder.setOrderStatus("NEW_ORDER");
-                    newOrder.setServiceId(serviceId);
-                    newOrder.setDate(d);
-                    newOrder.setQuantity(q);
-                    int hash = newOrder.hashCode();
-                    newOrder.setId(hash);
-                    Orders o = new Orders();
-                    try {
-                        boolean b = o.addNewOrder(newOrder);
-                        if (b) {
-                            dialog.setVisible(false);
-                            //successDialog();
-                        } else {
-                            //errorDialog();
-                        }
-                    } catch (JAXBException e1) {
-                        e1.printStackTrace();
-                    }
-                }
-            });
+
         }
+
         isPushed = false;
         return label;
     }

@@ -52,14 +52,13 @@ public class Orders {
         xmlProcessing xml = new xmlProcessing();
         Orders orders = (Orders) xml.readData(Orders.class, "Orders.xml");
 
-        for (Order o : orders.getOrders()){
-            /*Check if order date and time @TODO (slot?) is available? */
+        /*for (Order o : orders.getOrders()){
+            *//*Check if order date and time @TODO (slot?) is available? *//*
             if(Objects.equals(o.getDate(), newOrder.getDate()) &&
-                    /*1 order per time slot*/
                     Objects.equals(o.getTimeSlot(), newOrder.getTimeSlot())){
                 return false;
             }
-        }
+        }*/
         orders.getOrders().add(newOrder);
         xml.writeData(Orders.class, orders, "Orders.xml");
         return true;
