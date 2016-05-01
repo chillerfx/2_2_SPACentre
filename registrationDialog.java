@@ -9,6 +9,10 @@ import java.awt.event.ActionListener;
 import java.util.Objects;
 
 import static java.awt.ComponentOrientation.RIGHT_TO_LEFT;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.swing.text.DateFormatter;
+import javax.swing.text.DefaultFormatterFactory;
 
 public class registrationDialog extends JFrame {
     /*BUTTONS*/
@@ -32,6 +36,7 @@ public class registrationDialog extends JFrame {
     private JPanel panel_6;
     private JPanel panel_7;
     private JPanel panel_8;
+    private JPanel panel_9;
 
     public registrationDialog() {
         initRegistrationWindow();        //vartotojo prisijungimas
@@ -72,6 +77,11 @@ public class registrationDialog extends JFrame {
         JLabel userEmailLabel = new JLabel("El. paštas");
         final JTextField userEmailField = new JTextField(20);
 
+        JLabel userBirthdayLabel = new JLabel("Gimimo data");
+        final DateFormatter dateFormatter = new DateFormatter(new SimpleDateFormat("dd/MM/yyyy"));
+        final DefaultFormatterFactory dateFormatterFactory = new DefaultFormatterFactory(dateFormatter, new DateFormatter(), dateFormatter);
+        final JFormattedTextField dateField = new JFormattedTextField(dateFormatterFactory);
+        dateField.setValue(new Date());
 
         loginButton = new JButton("Prisijungti");
         registerButton = new JButton("Registruotis");
@@ -146,6 +156,15 @@ public class registrationDialog extends JFrame {
                 }
             }
             {
+                panel_9 = new JPanel();
+                panel.add(panel_9);
+                {
+                    panel_9.setLayout(new FlowLayout(FlowLayout.RIGHT));
+                    panel_9.add(userBirthdayLabel);
+                    panel_9.add(dateField);
+                }
+            }
+            {
                 panel_3 = new JPanel();
                 panel.add(panel_3);
                 {
@@ -176,11 +195,17 @@ public class registrationDialog extends JFrame {
                 String userSurname = userSurnameField.getText();
                 String userCity = userCityField.getText();
                 String userEmail = userEmailField.getText();
+                String userBirthday = dateField.getText();
                 int userLevel = 0;
-                if (Objects.equals(Crypto.cryptWithMD5(password), Crypto.cryptWithMD5(passwordConfirm))) {
+                if(userField.getText().equals("") || passwordField.getText().equals("") || passwordConfirmField.getText().equals("") || userNameField.getText().equals("") || userSurnameField.getText().equals("") || userCityField.getText().equals("") || userEmailField.getText().equals("")){
+                    JOptionPane.showMessageDialog(null,
+                            "Yra neužpildytų laukelių",
+                            "Klaida",
+                            JOptionPane.ERROR_MESSAGE);
+                } else if (Objects.equals(Crypto.cryptWithMD5(password), Crypto.cryptWithMD5(passwordConfirm))) {
                     Crypto pass = new Crypto();
                     String strPass = pass.cryptWithMD5(password);
-                    User newUser = new User(username, strPass, userName, userSurname, userEmail, userCity, 0, 0);
+                    User newUser = new User(username, strPass, userName, userSurname, userEmail, userCity, userBirthday, 0, 0);
                     int id = System.identityHashCode(newUser);
                     newUser.setId(id);
                     try {

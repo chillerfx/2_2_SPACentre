@@ -64,6 +64,14 @@ public class User {
         this.userLevel = userLevel;
     }
 
+    public String getUserBirthday() {
+        return userBirthday;
+    }
+
+    public void setUserBirthday(String userBirthday) {
+        this.userBirthday = userBirthday;
+    }
+
     int id;
     String userName;
     String username;
@@ -71,6 +79,10 @@ public class User {
     String userSurname;
     String userCity;
     String email;
+
+
+
+    String userBirthday;
     int    userLevel;
     public User() {}
     public User(User  user) {
@@ -89,6 +101,7 @@ public class User {
                 String userSurname,
                 String userEmail,
                 String userCity,
+                String userBirthday,
                 int id,
                 int userLevel) {
         this.id = id;
@@ -98,6 +111,7 @@ public class User {
         this.userSurname = userSurname;
         this.userCity = userCity;
         this.email = userEmail;
+        this.userBirthday = userBirthday;
         this.userLevel = userLevel;
     }
 
