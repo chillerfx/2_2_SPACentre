@@ -1,7 +1,10 @@
+import Models.Order;
+import Models.Orders;
 import Models.User;
 
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
+import javax.xml.bind.JAXBException;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -72,10 +75,10 @@ class OrderEditor extends DefaultCellEditor {
     public Object getCellEditorValue() {
         JPanel panel = new JPanel();
         JLabel qtyLabel = new JLabel("Kiekis");
-        JTextField qty  = new JTextField(10);
+        final JTextField qty  = new JTextField(10);
         JLabel dateLabel = new JLabel("Apsilankymo data (formatas)");
-        JTextField date  = new JTextField(10);
-
+        final JTextField date  = new JTextField(10);
+        JButton btn = new JButton("Naujas užsakymas");
         Date today;
         String dateOut;
         DateFormat dateFormatter;
@@ -88,10 +91,44 @@ class OrderEditor extends DefaultCellEditor {
         panel.add(qty);
         panel.add(dateLabel);
         panel.add(date);
+        panel.add(btn);
 
         if (isPushed) {
-            /*label + ": id " + id + "userId :" + userId*/
-            JOptionPane.showMessageDialog(button, panel);
+            final JDialog dialog = new JDialog(new JFrame(),
+                    "Naujos pasulaogos forma",
+                    true);
+            dialog.setContentPane(panel);
+            dialog.pack();
+            dialog.setLocationRelativeTo(null);
+            dialog.setVisible(true);
+            //JOptionPane.showMessageDialog(null, panel, true);
+            btn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    Integer q =  Integer.parseInt(qty.getText());
+                    String d = date.getText();
+                    Order newOrder = new Order();
+                    newOrder.setUserId(userId);
+                    newOrder.setOrderStatus("NEW_ORDER");
+                    newOrder.setServiceId(serviceId);
+                    newOrder.setDate(d);
+                    newOrder.setQuantity(q);
+                    int hash = newOrder.hashCode();
+                    newOrder.setId(hash);
+                    Orders o = new Orders();
+                    try {
+                        boolean b = o.addNewOrder(newOrder);
+                        if (b) {
+                            dialog.setVisible(false);
+                            //successDialog();
+                        } else {
+                            //errorDialog();
+                        }
+                    } catch (JAXBException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            });
         }
         isPushed = false;
         return label;

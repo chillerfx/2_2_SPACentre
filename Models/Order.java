@@ -8,14 +8,26 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Order {
         int id;
-        String city;
-        String firm;
-        String date;
+
+    Object serviceId;
+
+    String city;
+
+    String firm;
+    String date;
     /*arbitrary integer derived by dividing number of hours available in workday from slot per day*/
         int timeSlot;
     /*quantity <= max slots when ordering*/
         int quantity;
-        String orderStatus; // @TODO chage order status type to propper enum
+    String orderStatus; // @TODO chage order status type to propper enum
+    public Object getServiceId() {
+        return serviceId;
+    }
+
+    public void setServiceId(Object serviceId) {
+        this.serviceId = serviceId;
+    }
+
     public String getOrderStatus() {
         return orderStatus;
     }

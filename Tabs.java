@@ -127,6 +127,7 @@ public class Tabs  extends JPanel{
                 "Miestas",
                 "SPA",
                 "Procedūra",
+                "Kaina, EUR",
                 "  "
         };
         DefaultTableModel dtm = new DefaultTableModel();
@@ -138,6 +139,7 @@ public class Tabs  extends JPanel{
                     service.getCity(),
                     service.getSPAName(),
                     service.getSPAService(),
+                    service.getUnitPrice(),
                     "Užsisakyti"
                     }
             );
@@ -256,7 +258,7 @@ public class Tabs  extends JPanel{
         addBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("click");
+
                 SPAService newSPAservice = new SPAService();
                 newSPAservice.setMaxQuantity(Integer.parseInt(maxQField.getText()));
                 newSPAservice.setSPAName(spaNameField.getText());
