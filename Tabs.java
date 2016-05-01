@@ -1,5 +1,4 @@
 import Models.*;
-import com.sun.javafx.binding.DoubleConstant;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -7,6 +6,8 @@ import javax.xml.bind.JAXBException;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeListener;
 import java.util.*;
 import java.util.List;
@@ -155,7 +156,7 @@ public class Tabs  extends JPanel{
         grid.add(rightColumn);
         return grid;
     }
-    public void orderNewServiceDialog(JFrame frame,User user) throws JAXBException {
+    public void orderNewServiceDialog(final JFrame frame, final User user) throws JAXBException {
         JPanel panel = new JPanel();
         Object[] columnNames = {
                 "ID",
@@ -194,7 +195,19 @@ public class Tabs  extends JPanel{
         dialog.setContentPane(panel);
         dialog.pack();
         dialog.setLocationRelativeTo(null);
+        dialog.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                frame.dispose();
+                try {
+                    new mainFrame(user);
+                } catch (JAXBException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
         dialog.setVisible(true);
+
     }
 
 

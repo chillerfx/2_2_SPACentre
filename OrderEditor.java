@@ -42,9 +42,10 @@ class OrderEditor extends DefaultCellEditor {
     private boolean isPushed;
     private Object serviceId;
     private int userId;
-
+    private User user;
     public OrderEditor(JCheckBox checkBox, User b) {
         super(checkBox);
+        user = b;
         userId = b.getId();
         button = new JButton();
         button.setOpaque(true);
@@ -106,13 +107,10 @@ class OrderEditor extends DefaultCellEditor {
                 newOrder.setId(hash);
                 Orders o = new Orders();
                 try {
-                    o.addNewOrder(newOrder);
-                    boolean b = o.addNewOrder(newOrder);
-                    System.out.println(b);
-                    if (b) {
+                    //o.addNewOrder(newOrder);
+                    boolean c = o.addNewOrder(newOrder);
+                    if (c) {
                         JOptionPane.showMessageDialog(null, "Užsakymas sėkmingas!", "Užsakymas", JOptionPane.INFORMATION_MESSAGE);
-                        //dialog.setVisible(false);
-
                     } else {
                         //errorDialog();
                     }

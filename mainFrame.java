@@ -54,7 +54,6 @@ public class mainFrame extends JFrame {
         logOut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("click");
                 jframe.setVisible(FALSE);
                 new loginDialog().setVisible(TRUE);
             }
