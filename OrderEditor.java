@@ -80,7 +80,8 @@ class OrderEditor extends DefaultCellEditor {
         JPanel panel = new JPanel();
         JLabel qtyLabel = new JLabel("Kiekis");
         final JTextField qty  = new JTextField(10);
-        JLabel dateLabel = new JLabel("Apsilankymo data (formatas)");
+        qty.setText("1");
+        JLabel dateLabel = new JLabel("Apsilankymo data");
         final DateFormatter dateFormatter = new DateFormatter(new SimpleDateFormat("dd/MM/yyyy"));
         final DefaultFormatterFactory dateFormatterFactory = new DefaultFormatterFactory(dateFormatter, new DateFormatter(), dateFormatter);
         final JFormattedTextField dateField = new JFormattedTextField(dateFormatterFactory);
@@ -109,7 +110,12 @@ class OrderEditor extends DefaultCellEditor {
                 try {
                     //o.addNewOrder(newOrder);
                     boolean c = o.addNewOrder(newOrder);
-                    if (c) {
+                    if (qty.getText().equals("")){
+                        JOptionPane.showMessageDialog(null,
+                            "Neįvedėte kiekio",
+                            "Klaida",
+                            JOptionPane.ERROR_MESSAGE);
+                    } else if (c) {
                         JOptionPane.showMessageDialog(null, "Užsakymas sėkmingas!", "Užsakymas", JOptionPane.INFORMATION_MESSAGE);
                     } else {
                         //errorDialog();

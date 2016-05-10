@@ -1,4 +1,5 @@
 import Models.*;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -13,6 +14,8 @@ import java.util.*;
 import java.util.List;
 
 import static java.awt.ComponentOrientation.LEFT_TO_RIGHT;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class Tabs  extends JPanel{
     private Orders orders = new Orders();
@@ -24,38 +27,6 @@ public class Tabs  extends JPanel{
 
     private DefaultTableModel ordersTableModel = new DefaultTableModel();
 
-    public JPanel ordersTabAll(Models.User b, JFrame frame) throws JAXBException {
-        JPanel panel = new JPanel();
-        Object[] columnNames = {
-                "User ID",
-                "Apsilankymo Data",
-                "Abonimento Tipas(?)",
-                "Užsakymo dydis (žmonių kiekis)",
-                "Suma",
-                "Būsena"
-        };
-        //padaryt, kad rodytu dabartinio vartotojo uzsakymus
-        DefaultTableModel dtm = new DefaultTableModel();
-        dtm.setColumnIdentifiers(columnNames);
-        for(Order order: allUserOrdersData(b)) {
-            int userId = order.getUserId();
-            String  visitTime = order.getDate();
-            int qantity = order.getQuantity();
-            String total = "@TODO implement thiis"; //@TODO implement this
-            String status = order.getOrderStatus();
-            dtm.addRow(new Object[] {
-                    "" + userId + "",
-                    "" + visitTime + "",
-                    "g",
-                    ""+ qantity  +"",
-                    ""+ total + "",
-                    ""+ status + ""});
-        }
-        JTable table = new JTable(dtm);
-        JScrollPane scrollPane = new JScrollPane(table);
-        panel.add(scrollPane);
-        return panel;
-    }
 
     public JPanel ordersTab(Models.User b, JFrame frame) throws JAXBException {
         JPanel panel = new JPanel();
@@ -71,7 +42,7 @@ public class Tabs  extends JPanel{
         for(Order order: allUserOrdersData(b)) {
             String  visitTime = order.getDate();
             int qantity = order.getQuantity();
-            String total = "@TODO implement thiis"; //@TODO implement this
+            double total = qantity * spaServices.getPriceServiceById(order.getServiceId());
             String status = order.getOrderStatus();
             dtm.addRow(new Object[] {
                     "" + visitTime + "",
@@ -118,6 +89,7 @@ public class Tabs  extends JPanel{
     }
     public JPanel serviceTab(final User b, final JFrame frame) throws JAXBException {
         JPanel grid         = new JPanel();
+        grid.setPreferredSize(new Dimension(500, 300));
         final JPanel leftColumn   = new JPanel();
         JPanel rightColumn  = new JPanel();
         grid.setLayout(new FlowLayout());

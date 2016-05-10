@@ -17,7 +17,7 @@ public class initData {
             /*Add some test objects*/
             loadTestUsers();
             loadTestSPAs();
-            addTestOrders();
+           // addTestOrders();
         }
     }
     void loadTestSPAs() throws JAXBException {
@@ -27,11 +27,61 @@ public class initData {
         SPA1.setCity("Vilnius");
         SPA1.setAgeDiscounts(true);
         SPA1.setSPAName("UAB Auksinė vonia");
+        SPA1.setSPAService("Klasikinis masažas");
+        SPA1.setTrukme("60 min");
         SPA1.setMaxQuantity(2);
-        SPA1.setUnitPrice(100.00);
+        SPA1.setUnitPrice(25.00);
         int id1 = SPA1.hashCode();
         SPA1.setId(id1);
         SPAs.getSPAServices().add(SPA1);
+        
+        SPAService SPA2 = new SPAService();
+        SPA2.setCity("Vilnius");
+        SPA2.setAgeDiscounts(true);
+        SPA2.setSPAName("UAB Auksinė vonia");
+        SPA2.setSPAService("Terapinis masažas");
+        SPA2.setTrukme("40 min");
+        SPA2.setMaxQuantity(2);
+        SPA2.setUnitPrice(30.00);
+        int id2 = SPA2.hashCode();
+        SPA2.setId(id2);
+        SPAs.getSPAServices().add(SPA2);
+        
+        SPAService SPA3 = new SPAService();
+        SPA3.setCity("Vilnius");
+        SPA3.setAgeDiscounts(true);
+        SPA3.setSPAName("UAB Auksinė vonia");
+        SPA3.setSPAService("Kaklo masažas");
+        SPA3.setTrukme("20 min");
+        SPA3.setMaxQuantity(2);
+        SPA3.setUnitPrice(10.00);
+        int id3 = SPA3.hashCode();
+        SPA3.setId(id3);
+        SPAs.getSPAServices().add(SPA3);
+        
+        SPAService SPA4 = new SPAService();
+        SPA4.setCity("Vilnius");
+        SPA4.setAgeDiscounts(true);
+        SPA4.setSPAName("UAB Auksinė vonia");
+        SPA4.setSPAService("Pečių juostos masažas");
+        SPA4.setTrukme("25 min");
+        SPA4.setMaxQuantity(2);
+        SPA4.setUnitPrice(15.00);
+        int id4 = SPA4.hashCode();
+        SPA4.setId(id4);
+        SPAs.getSPAServices().add(SPA4);
+        
+        SPAService SPA5 = new SPAService();
+        SPA5.setCity("Vilnius");
+        SPA5.setAgeDiscounts(true);
+        SPA5.setSPAName("UAB Auksinė vonia");
+        SPA5.setSPAService("Atpalaiduojantis kūno masažas");
+        SPA5.setTrukme("40 min");
+        SPA5.setMaxQuantity(2);
+        SPA5.setUnitPrice(20.00);
+        int id5 = SPA5.hashCode();
+        SPA5.setId(id5);
+        SPAs.getSPAServices().add(SPA5);
 
         xmlProcessing xml = new xmlProcessing();
         xml.writeData(SPAServices.class, SPAs, "SPAServices.xml");

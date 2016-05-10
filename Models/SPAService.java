@@ -40,6 +40,14 @@ public class SPAService {
     public void setSPAService(String SPAService) {
         this.SPAService = SPAService;
     }
+    
+    public String getTrukme() {
+        return trukme;
+    }
+
+    public void setTrukme(String trukme) {
+        this.trukme = trukme;
+    }
 
     public String getSPAName() {
         return SPAName;
@@ -74,6 +82,7 @@ public class SPAService {
     boolean ageDiscounts;
     int maxQuantity;
     Double unitPrice;
+    String trukme;
 /*@TODO implement some sort of max quantity per day or smt
     * (Think slots per timeframe)
     * */

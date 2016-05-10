@@ -16,7 +16,9 @@ import static java.lang.Boolean.TRUE;
 
 public class mainFrame extends JFrame {
 
+
     private JFrame jframe                      = new JFrame();
+
     private JMenuBar jmenubar                  = new JMenuBar();
     private JMenu jmenu                        = new JMenu("Nustatymai");
     private JMenuItem logOut                   = new JMenuItem("Atsijungti");
@@ -26,6 +28,7 @@ public class mainFrame extends JFrame {
 
     public mainFrame(User currentUser) throws JAXBException {
         jframe.setLayout(new FlowLayout());
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jmenu.add(logOut);
         jmenubar.add(jmenu);
         jframe.setJMenuBar(jmenubar);
@@ -34,21 +37,19 @@ public class mainFrame extends JFrame {
         Tabs tab1 = new Tabs();
         Tabs tab2 = new Tabs();
         JPanel servicesTab = tab.serviceTab(currentUser, jframe);
-        JPanel ordersTab = tab1.ordersTab(currentUser, jframe);
-        JPanel ordersTabAll = tab1.ordersTabAll(currentUser, jframe);
+        JPanel ordersTabAll = tab1.ordersTab(currentUser, jframe);
         JPanel usersTab = tab.usersTab(currentUser, jframe);
 
         tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-
-        tabbedPane.addTab("Paslaugos",servicesTab);
-        tabbedPane.addTab("Užsakymai",ordersTab);
+        tabbedPane.addTab("Užsakymai",servicesTab);
         if(currentUser.getUserLevel() > 1) {
-            tabbedPane.addTab("Užsakymai visų klientų", ordersTabAll);
-            tabbedPane.addTab("Vartotojai", usersTab);
+        tabbedPane.addTab("Užsakymai visų klientų", ordersTabAll);
+        tabbedPane.addTab("Vartotojai", usersTab);
         }
         jframe.add(tabbedPane);
         jframe.pack();
         jframe.setLocationRelativeTo(null);
+        jframe.setDefaultCloseOperation(EXIT_ON_CLOSE);
         jframe.setVisible(true);
 
         logOut.addActionListener(new ActionListener() {

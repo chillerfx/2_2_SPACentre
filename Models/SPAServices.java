@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @XmlRootElement(name = "SPAServices")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -46,5 +47,17 @@ public class SPAServices {
             spaServices.getSPAServices().add(spa);
         }
         return spaServices;
+    }
+    public double getPriceServiceById(Object id) throws JAXBException {
+        SPAServices spaServices = new SPAServices();
+        spaServices.setSPAServices(new ArrayList<SPAService>());
+        xmlProcessing xml = new xmlProcessing();
+        SPAServices spaData = (SPAServices) xml.readData(SPAServices.class, "SPAServices.xml");
+        for (SPAService spa : spaData.getSPAServices()) {
+            if (Objects.equals(spa.getId(), id)){
+             return spa.getUnitPrice();
+            }
+        }
+        return 0;
     }
 }

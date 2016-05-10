@@ -55,6 +55,14 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+    
+    public String getBirthday() {
+        return birthday;
+    }
+    //@XmlElement
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
 
     public int getUserLevel() {
             return userLevel;
@@ -64,13 +72,6 @@ public class User {
         this.userLevel = userLevel;
     }
 
-    public String getUserBirthday() {
-        return userBirthday;
-    }
-
-    public void setUserBirthday(String userBirthday) {
-        this.userBirthday = userBirthday;
-    }
 
     int id;
     String userName;
@@ -79,10 +80,7 @@ public class User {
     String userSurname;
     String userCity;
     String email;
-
-
-
-    String userBirthday;
+    String birthday;
     int    userLevel;
     public User() {}
     public User(User  user) {
@@ -93,6 +91,7 @@ public class User {
         this.userSurname = user.getUserSurname();
         this.userCity = user.getUserCity();
         this.email = user.getEmail();
+        this.birthday = user.getBirthday();
         this.userLevel = user.getUserLevel();
     }
     public User(String username,
@@ -111,7 +110,7 @@ public class User {
         this.userSurname = userSurname;
         this.userCity = userCity;
         this.email = userEmail;
-        this.userBirthday = userBirthday;
+        this.birthday = userBirthday;
         this.userLevel = userLevel;
     }
 
