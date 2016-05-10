@@ -17,7 +17,7 @@ public class initData {
             /*Add some test objects*/
             loadTestUsers();
             loadTestSPAs();
-           // addTestOrders();
+            addTestOrders();
         }
     }
     void loadTestSPAs() throws JAXBException {
