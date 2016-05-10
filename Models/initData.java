@@ -63,7 +63,7 @@ public class initData {
         SPA4.setCity("Vilnius");
         SPA4.setAgeDiscounts(true);
         SPA4.setSPAName("UAB Auksinė vonia");
-        SPA4.setSPAService("Pečių juostos masažas");
+        SPA4.setSPAService("Peciu juostos masažas");
         SPA4.setTrukme("25 min");
         SPA4.setMaxQuantity(2);
         SPA4.setUnitPrice(15.00);
