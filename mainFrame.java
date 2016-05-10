@@ -42,8 +42,8 @@ public class mainFrame extends JFrame {
 
         tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         tabbedPane.addTab("Užsakymai",servicesTab);
-        if(currentUser.getUserLevel() > 1) {
         tabbedPane.addTab("Užsakymai visų klientų", ordersTabAll);
+        if(currentUser.getUserLevel() > 1) {
         tabbedPane.addTab("Vartotojai", usersTab);
         }
         jframe.add(tabbedPane);
